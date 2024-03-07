@@ -1,0 +1,192 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String  @db.ObjectId
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  
+  access_token       String?  
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Sector {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    name            String?
+    users           User[]
+    concursos       Concurso[]
+    tarefas         Tarefa[]
+}
+
+
+enum UserRole {
+  ADMIN
+  GUEST
+  COMPANY
+  WORKER
+}
+
+
+model User {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    accounts        Account[]
+    sessions        Session[]
+    firstName       String?
+    lastName        String?
+    email           String?    @unique
+    emailVerified   DateTime?
+    role            UserRole   @default(GUEST)
+    hashPass        String
+    avatarUrl       String?
+    bio             String?
+    slogan          String?
+    address         String?
+    nuit            String?
+    contact         String?
+    provincia       String?
+    cidade          String?
+    idade           DateTime?
+    sector          Sector      @relation(fields: [id], references: [id])
+    concursos       Concurso[]
+    tarefas         Tarefa[]
+    propostasC      PropostaConcurso[]
+    propostasT      PropostaTarefa[]
+    saves           Saved[]
+    lojas           Loja[]
+    favoritStore    Follower[]
+    colaboradores   Colaborador[]
+    createAt        DateTime    @default(now())
+}
+
+
+model Concurso {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    user            User      @relation(fields: [id], references: [id])
+    sector          Sector      @relation(fields: [id], references: [id])
+    title           String?
+    precoMin        String?
+    precoMax        String?
+    prazo           DateTime?
+    descricao       String?
+    propostas       PropostaConcurso[]
+    ficheiros       ConcursoFile[]
+    createAt        DateTime    @default(now())
+}
+
+model ConcursoFile {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    url          String?
+    concurso     Concurso   @relation(fields: [id], references: [id])
+}
+
+model Tarefa {
+    id              String      @id @default(auto()) @map("_id") @db.ObjectId
+    user            User        @relation(fields: [id], references: [id])
+    sector          Sector      @relation(fields: [id], references: [id])
+    title           String?
+    precoMin        String?
+    precoMax        String?
+    prazo           DateTime?
+    descricao       String?
+    createAt        DateTime    @default(now())
+    ficheiros       TarefaFile[]
+    propostas       PropostaTarefa[]
+}
+
+model TarefaFile {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    url          String?
+    tarefa       Tarefa   @relation(fields: [id], references: [id])
+}
+
+model PropostaConcurso {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    user            User      @relation(fields: [id], references: [id])
+    concurso        Concurso  @relation(fields: [id], references: [id])
+    orcamento       String?
+    tempo           String?
+    periodo         String?
+    descricao       String?
+    status          String?   @default("pending")
+    createAt        DateTime   @default(now())
+}
+
+model PropostaTarefa {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    user            User      @relation(fields: [id], references: [id])
+    tarefa          Tarefa    @relation(fields: [id], references: [id])
+    orcamento       String?
+    tempo           String?
+    periodo         String?
+    descricao       String?
+    createAt        DateTime    @default(now())
+}
+
+model Saved {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    user            User      @relation(fields: [id], references: [id])
+    objectId        String?
+}
+
+model Loja {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    user            User      @relation(fields: [id], references: [id])     
+    name            String?
+    descricao       String?
+    sector          String?
+    logo            String?
+    createAt        DateTime    @default(now())
+    followers       Follower[]
+    produtos        Product[]
+}
+
+model Follower {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  user            User      @relation(fields: [id], references: [id])
+  loja            Loja      @relation(fields: [id], references: [id]) 
+}
+
+model Product {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  loja            Loja      @relation(fields: [id], references: [id])
+  categoria       String?
+  name            String?
+  price           String?
+  cover           String?
+  descricao       String?
+  lotMin          String?
+  stock           String? @default("retalho")
+  quantidade      String? @default("avulso")
+}
+
+model Colaborador {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  user            User      @relation(fields: [id], references: [id])
+  author          String? 
+  cargo           String?
+  descricao       String?
+}
