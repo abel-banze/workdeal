@@ -104,7 +104,7 @@ export default function SidebarDashboard(){
                     url: ''
                 },
                 {
-                    label: 'gerir meus concursos',
+                    label: 'gerir concursos',
                     url: 'manage'
                 },
                 {
@@ -119,14 +119,14 @@ export default function SidebarDashboard(){
             menu: [
                 {
                     label: 'propostas feitas',
-                    url: 'propostas'
+                    url: ''
                 },
                 {
                     label: 'propostas aceites',
-                    url: 'propostas/aceites'
+                    url: 'aceites'
                 },{
-                    label: 'propostas concluídas',
-                    url: 'propostas/concluidas'
+                    label: 'trabalhos concluídos',
+                    url: 'concluidos'
                 }
             ]
         }

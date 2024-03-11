@@ -70,7 +70,8 @@ model User {
     provincia       String?
     cidade          String?
     idade           DateTime?
-    sector          Sector      @relation(fields: [id], references: [id])
+    sectorId        String?      @db.ObjectId
+    sector          Sector?      @relation(fields: [sectorId], references: [id])
     concursos       Concurso[]
     tarefas         Tarefa[]
     propostasC      PropostaConcurso[]
@@ -85,8 +86,10 @@ model User {
 
 model Concurso {
     id              String    @id @default(auto()) @map("_id") @db.ObjectId
-    user            User      @relation(fields: [id], references: [id])
-    sector          Sector      @relation(fields: [id], references: [id])
+    userId          String    @db.ObjectId
+    sectorId        String    @db.ObjectId
+    user            User      @relation(fields: [userId], references: [id])
+    sector          Sector    @relation(fields: [sectorId], references: [id])
     title           String?
     precoMin        String?
     precoMax        String?
@@ -98,15 +101,18 @@ model Concurso {
 }
 
 model ConcursoFile {
-    id           String   @id @default(auto()) @map("_id") @db.ObjectId
-    url          String?
-    concurso     Concurso   @relation(fields: [id], references: [id])
+    id             String   @id @default(auto()) @map("_id") @db.ObjectId
+    fileId            String?
+    concursoId     String   @db.ObjectId
+    concurso       Concurso   @relation(fields: [concursoId], references: [id])
 }
 
 model Tarefa {
     id              String      @id @default(auto()) @map("_id") @db.ObjectId
-    user            User        @relation(fields: [id], references: [id])
-    sector          Sector      @relation(fields: [id], references: [id])
+    userId          String    @db.ObjectId
+    sectorId        String    @db.ObjectId
+    user            User        @relation(fields: [userId], references: [id])
+    sector          Sector      @relation(fields: [sectorId], references: [id])
     title           String?
     precoMin        String?
     precoMax        String?
@@ -118,15 +124,18 @@ model Tarefa {
 }
 
 model TarefaFile {
-    id           String   @id @default(auto()) @map("_id") @db.ObjectId
-    url          String?
-    tarefa       Tarefa   @relation(fields: [id], references: [id])
+    id              String   @id @default(auto()) @map("_id") @db.ObjectId
+    tarefaId        String  @db.ObjectId
+    fileId          String?
+    tarefa          Tarefa   @relation(fields: [tarefaId], references: [id])
 }
 
 model PropostaConcurso {
     id              String    @id @default(auto()) @map("_id") @db.ObjectId
-    user            User      @relation(fields: [id], references: [id])
-    concurso        Concurso  @relation(fields: [id], references: [id])
+    userId          String    @db.ObjectId
+    user            User      @relation(fields: [userId], references: [id])
+    concursoId      String    @db.ObjectId
+    concurso        Concurso  @relation(fields: [concursoId], references: [id])
     orcamento       String?
     tempo           String?
     periodo         String?
@@ -137,24 +146,30 @@ model PropostaConcurso {
 
 model PropostaTarefa {
     id              String    @id @default(auto()) @map("_id") @db.ObjectId
-    user            User      @relation(fields: [id], references: [id])
-    tarefa          Tarefa    @relation(fields: [id], references: [id])
+    userId          String    @db.ObjectId
+    user            User      @relation(fields: [userId], references: [id])
+    tarefaId        String    @db.ObjectId
+    tarefa          Tarefa    @relation(fields: [tarefaId], references: [id])
     orcamento       String?
     tempo           String?
     periodo         String?
     descricao       String?
+    status          String?   @default("pending")
     createAt        DateTime    @default(now())
 }
 
 model Saved {
     id              String    @id @default(auto()) @map("_id") @db.ObjectId
-    user            User      @relation(fields: [id], references: [id])
+    userId          String    @db.ObjectId
+    user            User      @relation(fields: [userId], references: [id])
+    type            String
     objectId        String?
 }
 
 model Loja {
     id              String    @id @default(auto()) @map("_id") @db.ObjectId
-    user            User      @relation(fields: [id], references: [id])     
+    userId          String    @db.ObjectId
+    user            User      @relation(fields: [userId], references: [id])     
     name            String?
     descricao       String?
     sector          String?
@@ -166,13 +181,16 @@ model Loja {
 
 model Follower {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  user            User      @relation(fields: [id], references: [id])
-  loja            Loja      @relation(fields: [id], references: [id]) 
+  userId          String    @db.ObjectId
+  user            User      @relation(fields: [userId], references: [id])
+  lojaId          String    @db.ObjectId
+  loja            Loja      @relation(fields: [lojaId], references: [id]) 
 }
 
 model Product {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  loja            Loja      @relation(fields: [id], references: [id])
+  lojaId          String    @db.ObjectId
+  loja            Loja      @relation(fields: [lojaId], references: [id])
   categoria       String?
   name            String?
   price           String?
@@ -185,7 +203,8 @@ model Product {
 
 model Colaborador {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  user            User      @relation(fields: [id], references: [id])
+  userId          String    @db.ObjectId
+  user            User      @relation(fields: [userId], references: [id])
   author          String? 
   cargo           String?
   descricao       String?

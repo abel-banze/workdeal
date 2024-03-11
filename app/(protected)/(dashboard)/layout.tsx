@@ -1,4 +1,4 @@
-import { SidebarDashboard } from "@/components"
+import { SidebarDashboard, Headbar } from "@/components"
 
 export default function DashboardLayout({ children } : {
     children: React.ReactNode
@@ -7,8 +7,11 @@ export default function DashboardLayout({ children } : {
         <>
             <div className="w-full flex flex-row">
                 <SidebarDashboard />
-                <div className="w-full flex flex-col p-5 gap-5">
-                    { children }
+                <div className="w-full flex flex-col gap-5">
+                    <Headbar />
+                    <div>
+                        { children }
+                    </div>
                 </div>
             </div>
         </>

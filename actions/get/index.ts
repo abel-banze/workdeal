@@ -47,3 +47,138 @@ export async function getCategories(){
         return "failed";
     }
 }
+
+export async function getConcursos(){
+    try{
+
+        const promise = await db.concurso.findMany({
+            include: {
+                user: true
+            }
+        });
+
+        if(!promise) return null;
+
+        return promise;
+
+    }catch(err){
+        console.log(err)
+        return "failed"
+    }
+}
+
+export async function getConcursoById(id: string){
+    try{
+
+        const promise = await db.concurso.findFirst({
+            where: {
+                id: id
+            },
+            include: {
+                user: true,
+                propostas: {
+                    include: {
+                        user: true
+                    }
+                }
+            }
+        });
+
+        if(!promise) return "failed";
+
+        return promise;
+
+    }catch(err){
+        return 'failed';
+    }
+}
+
+export async function getTarefas(){
+    try{
+
+        const promise = await db.tarefa.findMany({
+            include: {
+                user: true
+            }
+        });
+        if(!promise) return null;
+
+        return promise;
+
+    }catch(err){
+        return "failed"
+    }
+}
+
+export async function getTarefaById(id: string){
+    try{
+
+        const promise = await db.tarefa.findFirst({
+            where: {
+                id: id
+            },
+            include: {
+                user: true,
+                propostas: true
+            }
+        });
+
+        return promise;
+
+    }catch(err){
+        return null;
+    }
+}
+
+export async function getMyConcursos(){
+    try{
+
+        const auth = await getLoggedUser()
+        if(!auth) return "unathenticade";
+
+        const promise = await db.concurso.findMany({
+            where: {
+                userId: auth.id
+            },
+            include: {
+                propostas: true
+            }
+        });
+
+        if(!promise) return "failed";
+
+        return promise;
+
+    }catch(err){
+        return "failed"
+    }
+}
+
+export async function getMyPropostas(){
+    try{
+
+        const auth = await getLoggedUser()
+        if(!auth) return "unathenticade";
+
+        const promise = await db.concurso.findMany({
+            where: {
+                propostas: {
+                    some: {
+                        userId: auth.id
+                    }
+                }
+            },
+            include: {
+                propostas: true,
+                user: true,
+            }
+        });
+
+        if(!promise) return "failed";
+
+        return promise;
+
+    }catch(err){
+        return "failed";
+    }
+}

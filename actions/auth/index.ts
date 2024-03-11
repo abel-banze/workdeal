@@ -43,8 +43,6 @@ export async function register(info: CreateUserType){
 export async function login(email: string, password: string){
     try{
 
-        console.log(`a partir do actions/login... Email: ${email}, Password: ${password}`)
-
         await signIn("credentials", {
             email,
             password,

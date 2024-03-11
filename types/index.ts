@@ -13,7 +13,7 @@ export type ConcursoType = {
     precoMin: string;
     precoMax: string;
     prazo: Date | null;
-    files: FileList | null;
+    files: string[] | null;
 }
 
 export type TarefaType = {
@@ -59,4 +59,25 @@ export type SaveConcurso = {
     user: string;
     tipo: string;
     objectId: string;
+}
+
+export type CreateConcursoType = {
+    concurso: string;
+    orcamento: string;
+    tempo: string;
+    periodo: string;
+    descricao: string;
+}
+
+export type CreateTarefaType = {
+    tarefa: string;
+    orcamento: string;
+    tempo: string;
+    periodo: string;
+    descricao: string;
+}
+
+export type SaveObjectType = {
+    id: string;
+    type: string;
 }
