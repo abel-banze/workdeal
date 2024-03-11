@@ -13,7 +13,7 @@ export default async function ManageConcurso(){
 
                 <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-2">
                     { getData != 'unathenticade' && getData != 'failed' && getData.map((item: any, index: any)=>(
-                        <div className="p-2 px-5 rounded-lg bg-white dark:bg-zinc-800 flex flex-col gap-2">
+                        <div className="p-2 px-5 rounded-lg bg-white dark:bg-zinc-800 flex flex-col gap-2" key={index}>
                             <h1 className="text-lg font-semibold"> { item.title } </h1>
                             <div className="w-full flex flex-row items-center justify-between">
                                 <span className="text-xs text-gray-500">

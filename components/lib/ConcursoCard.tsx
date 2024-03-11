@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { FaArrowRightLong } from "react-icons/fa6";
 import { HumanTime } from "@/components"
+import Image from "next/image"
 
 export default function ConcursoCard({ type, data} : { type: string; data: any }){
     return (
@@ -11,7 +12,7 @@ export default function ConcursoCard({ type, data} : { type: string; data: any }
                     { type === 'concursos' && (
                         <div className="flex flex-row gap-2 items-center justify-center">
                             <div className="w-5 h-5 rounded-full bg-white dark:bg-zinc-800">
-                                <img   
+                                <Image   
                                     src={data.user.avatarUrl} 
                                     alt="avatar"
                                     className="w-full h-full object-cover rounded-full"
