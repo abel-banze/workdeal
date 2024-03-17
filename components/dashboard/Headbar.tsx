@@ -1,6 +1,7 @@
 'use client'
 import { SlBell, SlEnvolope } from "react-icons/sl";
 import { HiArrowRightOnRectangle } from "react-icons/hi2";
+import { signOut } from "next-auth/react";
 
 export default function Headbar(){
     return (
@@ -15,6 +16,7 @@ export default function Headbar(){
                     </button>
                     <button
                         type="button"
+                        onClick={()=> signOut()}
                         className="flex flex-row gap-1 items-center justify-center"
                     >
                         Sair

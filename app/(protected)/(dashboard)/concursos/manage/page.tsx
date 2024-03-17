@@ -1,7 +1,8 @@
 import { getMyConcursos } from "@/actions/get";
 import Link from "next/link";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
-import { HumanTime } from "@/components"
+import { HumanTime } from "@/components";
+import Image from "next/image";
 
 export default async function ManageConcurso(){
     const getData = await getMyConcursos();
@@ -15,6 +16,18 @@ export default async function ManageConcurso(){
                     { getData != 'unathenticade' && getData != 'failed' && getData.map((item: any, index: any)=>(
                         <div className="p-2 px-5 rounded-lg bg-white dark:bg-zinc-800 flex flex-col gap-2" key={index}>
                             <h1 className="text-lg font-semibold"> { item.title } </h1>
+                            <div className="w-full flex flex-row items-center gap-2">
+                                <div className="w-5 h-5 rounded-full">
+                                    <Image 
+                                        src={item.author.logo}
+                                        alt="logo"
+                                        width={500}
+                                        height={500}
+                                        className="object-cover w-full h-full rounded-full"
+                                    />
+                                </div>
+                                <span className="text-xs text-gray-500"> { item.author.name } </span>
+                            </div>
                             <div className="w-full flex flex-row items-center justify-between">
                                 <span className="text-xs text-gray-500">
                                     { item.propostas.length } propostas

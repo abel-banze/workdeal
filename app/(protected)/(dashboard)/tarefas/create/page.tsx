@@ -11,7 +11,7 @@ export default async function CreateTarefa(){
             <div className="w-full flex flex-col gap-5 p-5">
                 <h1 className="w-full text-xl font-bold">Criar tarefa</h1>
 
-                <ConcursoForm type="tarefa" cats={cats} />
+                <ConcursoForm type="tarefa" orgId="unknown" cats={cats} />
             </div>
         </>
     )

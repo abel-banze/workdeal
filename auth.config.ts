@@ -1,4 +1,5 @@
 import Credentials from "next-auth/providers/credentials";
+import FacebookProvider from "next-auth/providers/facebook";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
@@ -8,47 +9,48 @@ const login: any = async (credentials: {
   email: string;
   password: string;
 }) => {
-  try{
+  try {
 
-      console.log('from login - auth.config.ts', credentials)
+    const check = await db.user.findUnique({
+      where: {
+        email: credentials.email
+      }
+    });
+    
+    if (!check) throw Error("Não existe usuário com esse email.");
 
-      const check = await db.user.findUnique({
-          where: {
-            email: credentials.email
-          }
-      });
+    const isCorrect = await bcrypt.compare(
+      credentials.password,
+      check.hashPass
+    );
 
-      console.log(check)
-      
-      if(!check) throw Error("Não existe usuário com esse email.");
+    if (!isCorrect) throw Error("Senha incorrecta.");
 
-      const isCorrect = await bcrypt.compare(
-          credentials.password,
-          check.hashPass
-      );
-
-      if(!isCorrect) throw Error("Senha incorrecta.");
-
-      return check;
-  }catch(err){
-      console.log(err)
-      throw Error("Erro ao fazer o login")
+    return check;
+  } catch(err) {
+    console.log(err)
+    throw Error("Erro ao fazer o login")
   }
 }
 
-export default {
+const nextAuthConfig: NextAuthConfig = {
   providers: [
     Credentials({
-      async authorize(credentials){
-        try{
-          console.log('from authorize: ', credentials)
+      async authorize(credentials) {
+        try {
           const user = await login(credentials);
           return user;
-        }catch(err){
-            console.log(err)
-            return null;
+        } catch(err) {
+          console.log(err)
+          return null;
         }
       }
+    }),
+    FacebookProvider({
+      clientId: '381020798112514',
+      clientSecret: 'b91cb367e6f1241e920c9780448526f3'
     })
-  ],
-} satisfies NextAuthConfig
+  ]
+};
+
+export default nextAuthConfig;

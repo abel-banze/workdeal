@@ -5,7 +5,6 @@ import { db } from "@/lib/db"
 import { getUserById } from "@/actions/get";
 
 
-
 export const {
   handlers: { GET, POST },
   auth,
@@ -25,15 +24,18 @@ export const {
       return session;
     },
 
-    async jwt({ token }){
+    async jwt({ token, account }){
       if(!token.sub) return token;
       
+      if(account){
+        token.accessToken = account.accessToken;
+      }
       const existingUser = await getUserById(token.sub);
       
       if(!existingUser) return token;
 
       return token;
-    }
+    },
   },
   adapter: PrismaAdapter(db),
   session: { strategy: 'jwt' },

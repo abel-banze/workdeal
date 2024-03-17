@@ -40,6 +40,8 @@ model Sector {
     users           User[]
     concursos       Concurso[]
     tarefas         Tarefa[]
+    organizacoes    Organizacao[]
+    servicosOrg     OrganizacaoServico[]
 }
 
 
@@ -72,7 +74,6 @@ model User {
     idade           DateTime?
     sectorId        String?      @db.ObjectId
     sector          Sector?      @relation(fields: [sectorId], references: [id])
-    concursos       Concurso[]
     tarefas         Tarefa[]
     propostasC      PropostaConcurso[]
     propostasT      PropostaTarefa[]
@@ -80,24 +81,69 @@ model User {
     lojas           Loja[]
     favoritStore    Follower[]
     colaboradores   Colaborador[]
+    organizacoes    Organizacao[]
+    connections     Connect[]
     createAt        DateTime    @default(now())
 }
 
 
-model Concurso {
+model Organizacao {
     id              String    @id @default(auto()) @map("_id") @db.ObjectId
     userId          String    @db.ObjectId
-    sectorId        String    @db.ObjectId
     user            User      @relation(fields: [userId], references: [id])
+    name            String
+    sectorId        String    @db.ObjectId
     sector          Sector    @relation(fields: [sectorId], references: [id])
-    title           String?
-    precoMin        String?
-    precoMax        String?
-    prazo           DateTime?
+    logo            String?
+    slogan          String?
     descricao       String?
-    propostas       PropostaConcurso[]
-    ficheiros       ConcursoFile[]
-    createAt        DateTime    @default(now())
+    nuit            String?
+    email           String?
+    contactos       String?
+    endereco        String?
+    localizacao     String?
+    colaboradores   Colaborador[]
+    concursos       Concurso[]
+    servicos        OrganizacaoServico[]
+    departamentos   Departamento[]
+}
+
+
+model OrganizacaoServico {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    sectorId        String    @db.ObjectId
+    sector          Sector    @relation(fields: [sectorId], references: [id])
+    authorId        String    @db.ObjectId
+    author          Organizacao     @relation(fields: [authorId], references: [id])
+    title           String?
+    descricao       String?
+    preco           String?
+    cover           String?
+    files           ServicoFile[]
+}
+
+model ServicoFile {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    servicoId       String    @db.ObjectId
+    servico         OrganizacaoServico  @relation(fields: [servicoId], references: [id])
+    url             String?
+}
+
+model Concurso {
+    id                String    @id @default(auto()) @map("_id") @db.ObjectId
+    authorId          String    @db.ObjectId
+    sectorId          String    @db.ObjectId
+    author            Organizacao     @relation(fields: [authorId], references: [id])
+    sector            Sector    @relation(fields: [sectorId], references: [id])
+    title             String?
+    precoMin          String?
+    precoMax          String?
+    prazo             DateTime?
+    localizacao       String?
+    descricao         String?
+    propostas         PropostaConcurso[]
+    ficheiros         ConcursoFile[]
+    createAt          DateTime    @default(now())
 }
 
 model ConcursoFile {
@@ -117,6 +163,8 @@ model Tarefa {
     precoMin        String?
     precoMax        String?
     prazo           DateTime?
+    modalidade      String?   @default("remoto")
+    localizacao     String?
     descricao       String?
     createAt        DateTime    @default(now())
     ficheiros       TarefaFile[]
@@ -154,7 +202,7 @@ model PropostaTarefa {
     tempo           String?
     periodo         String?
     descricao       String?
-    status          String?   @default("pending")
+    status          String?     @default("pending")
     createAt        DateTime    @default(now())
 }
 
@@ -202,10 +250,29 @@ model Product {
 }
 
 model Colaborador {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String    @db.ObjectId
-  user            User      @relation(fields: [userId], references: [id])
-  author          String? 
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String        @db.ObjectId
+  user            User          @relation(fields: [userId], references: [id])
+  organizacaoId   String        @db.ObjectId
+  organizacao     Organizacao   @relation(fields: [organizacaoId], references: [id])
+  departamentoId  String?       @db.ObjectId
+  departamento    Departamento? @relation(fields: [departamentoId], references: [id])
   cargo           String?
   descricao       String?
+}
+
+model Departamento {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  organizacaoId   String        @db.ObjectId
+  organizacao     Organizacao   @relation(fields: [organizacaoId], references: [id])
+  colaboradores   Colaborador[]
+  name            String?
+}
+
+model Connect {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String        @db.ObjectId
+  user            User          @relation(fields: [userId], references: [id])
+  media           String?
+  token           String?
 }

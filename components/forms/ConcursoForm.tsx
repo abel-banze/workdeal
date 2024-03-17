@@ -14,6 +14,7 @@ type ConcursoType = {
     precoMin: string;
     precoMax: string;
     prazo: string;
+    localizacao: string;
     files: FileList | null;
 }
 
@@ -22,13 +23,14 @@ const INITIAL_STATE = {
     title: '',
     descricao: '',
     prazo: '',
+    localizacao: '',
     precoMin: '',
     precoMax: '',
     files: null,
     sector: ''
 }
 
-export default function ConcursoForm({type, cats } : { type: string; cats: any}){
+export default function ConcursoForm({type, cats, orgId } : { type: string; cats: any; orgId: string}){
     const [data, setData] = useState<ConcursoType>(INITIAL_STATE)
     const [loading, setLoading] = useState(false)
 
@@ -45,6 +47,8 @@ export default function ConcursoForm({type, cats } : { type: string; cats: any})
         form.append('precoMin', data.precoMin);
         form.append('precoMax', data.precoMax);
         form.append('sector', data.sector);
+        form.append('organizacao', orgId);
+        form.append('localizacao', data.localizacao)
       
         if (data.files) {
           for (const file of Object.values(data.files)) {
@@ -143,17 +147,31 @@ export default function ConcursoForm({type, cats } : { type: string; cats: any})
                     </textarea>
                 </div>
 
-                <div className="w-full flex flex-col gap-2 p-2">
-                    <label htmlFor="min" className="text-xs text-slate-5000">Adicione ficheiros que estão relacionados a esse concurso.</label>
-                    <input 
-                        type="file"
-                        multiple={true}
-                        onChange={(e) => setData({...data, files: e.target.files})}
-                        name="files"
-                        title="Clique para carregar os ficheiros"
-                        className="p-2 py-5 w-full h-full cursor-pointer" 
-                    />
+                <div className="w-full grid grid-cols-1 lg:grid-cols-2">
+                    <div className="w-full flex flex-col gap-2 p-2">
+                        <label htmlFor="location" className="text-xs">Onde este trabalho deverá ser realizado?</label>
+                        <input 
+                            type="text"
+                            onChange={(e) => setData({...data, localizacao: e.target.value})} 
+                            placeholder="Indique a província ou cidade..."
+                            className="p-2 px-5 rounded-lg w-full bg-white dark:bg-zinc-800 focus:outline-none" 
+                        />
+                    </div>
+
+                    <div className="w-full flex flex-col gap-2 p-2">
+                        <label htmlFor="min" className="text-xs">Adicione ficheiros que estão relacionados a esse concurso.</label>
+                        <input 
+                            type="file"
+                            multiple={true}
+                            onChange={(e) => setData({...data, files: e.target.files})}
+                            name="files"
+                            title="Clique para carregar os ficheiros"
+                            className="w-full h-full cursor-pointer" 
+                        />
+                    </div>
                 </div>
+
+                
 
                 <div className="w-full flex flex-col mt-3 p-2">
                 <button

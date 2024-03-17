@@ -24,7 +24,7 @@ export default async function GerirPropostasConcurso({ params } : { params: { id
                         <tbody >
                             { (getData != 'failed' && getData.propostas.length > 0) ? (
                                 getData.propostas.map((item: any, index: any)=> (
-                                    <tr className="px-3 border-b border-slate-300 dark:border-gray-700">
+                                    <tr className="px-3 border-b border-slate-300 dark:border-gray-700" key={index}>
                                         <td className="px-3">
                                             <div className="flex flex-row gap-x-2 items-center">
                                                 <div className="h-5 w-5 rounded-full bg-zinc-800">

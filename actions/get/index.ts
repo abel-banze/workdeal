@@ -53,7 +53,7 @@ export async function getConcursos(){
 
         const promise = await db.concurso.findMany({
             include: {
-                user: true
+                author: true
             }
         });
 
@@ -75,7 +75,7 @@ export async function getConcursoById(id: string){
                 id: id
             },
             include: {
-                user: true,
+                author: true,
                 propostas: {
                     include: {
                         user: true
@@ -138,14 +138,15 @@ export async function getMyConcursos(){
 
         const promise = await db.concurso.findMany({
             where: {
-                userId: auth.id
+                author: {
+                    userId: auth.id
+                }
             },
             include: {
+                author: true,
                 propostas: true
             }
         });
-
-        if(!promise) return "failed";
 
         return promise;
 
@@ -170,13 +171,114 @@ export async function getMyPropostas(){
             },
             include: {
                 propostas: true,
-                user: true,
+                author: true,
             }
         });
 
         if(!promise) return "failed";
 
         return promise;
+
+    }catch(err){
+        return "failed";
+    }
+}
+
+export async function getMyOrganizations(){
+    try{
+
+        const auth = await getLoggedUser()
+        if(!auth) return "unathenticade";
+
+        const promise = await db.organizacao.findMany({
+            where: {
+                userId: auth.id
+            },
+            include: {
+                colaboradores: true,
+                departamentos: true
+            }
+        });
+
+        if(!promise) return "failed";
+
+        return promise;
+
+    }catch(err){
+        return "failed";
+    }
+}
+
+export async function getOrganizationById(id: string){
+    try{
+
+        const organization = await db.organizacao.findFirst({
+            where: {
+                id: id
+            },
+            include: {
+                colaboradores: true,
+                departamentos: {
+                    include: {
+                        colaboradores: true
+                    }
+                }
+            }
+        });
+
+        if(!organization) return "failed";
+
+        return organization;
+
+    }catch(err){
+        return "failed"
+    }
+}
+
+export async function getToken(){
+    try{
+
+        const auth = await getLoggedUser();
+        if (!auth) return "unathenticade";
+
+        const media = await db.connect.findFirst({
+            where: {
+                userId: auth.id
+            }
+        });
+
+        if(!media) return "failed";
+
+        return media;
+
+    }catch(err){
+        return "failed"
+    }
+}
+
+export async function getFacebookPages(){
+    try{
+
+        const token = await getToken();
+        if(token === 'failed' || token === 'unathenticade') return "failed";
+
+        if(token.media === 'facebook' && token.token){
+
+            const params = new URLSearchParams({
+                access_token: token.token,
+                fields: 'name,id,category,picture',
+            });
+              
+            const url = `https://graph.facebook.com/v19.0/me/accounts?${params}`;
+              
+            const response = await fetch(url);
+
+            console.log('request status: ',response.status);
+
+            const data = await response.json();
+
+            return data;
+        }
 
     }catch(err){
         return "failed";

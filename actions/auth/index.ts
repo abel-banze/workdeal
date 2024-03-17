@@ -1,3 +1,5 @@
+'use server'
+
 import bcrypt from "bcrypt";
 import { CreateUserType } from "@/types"
 import { db } from "@/lib/db"
@@ -54,9 +56,9 @@ export async function login(email: string, password: string){
         if(err instanceof AuthError){
             switch(err.type){
                 case 'CredentialsSignin':
-                    return { error: 'Credenciais incorrectos.' }
+                    return 'As suas credenciais estão incorrectas.';
                 default:
-                    return { error: 'Algo correu mal.' }
+                    return  'Algo correu mal.';
             }
         }
 

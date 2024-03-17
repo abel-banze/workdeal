@@ -7,6 +7,8 @@ export type CreateUserType = {
 
 export type ConcursoType = {
     user: string;
+    organizacao: string;
+    localizacao: string;
     title: string;
     descricao: string;
     sector: string;

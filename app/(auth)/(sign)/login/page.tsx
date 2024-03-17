@@ -1,25 +1,40 @@
-import { Metadata } from "next";
-import { ButtonSubmit } from "@/components";
+'use client'
+
+import { useState } from "react";
 import Link from "next/link";
-import { login } from "@/actions/auth";
+import axios from "axios"
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 
-export const metadata: Metadata = {
-    title: "Workdeal | Login",
-    description: "Work and make deal.",
-};
+const INITIAL_STATE = {
+    email: '',
+    password: ''
+}
+
 
 export default function Login(){
+    const [data, setData] = useState(INITIAL_STATE)
+    const [message, setMessage] = useState('')
+    const [loading, setLoading] = useState(false)
 
-    const handleLogin = async (formData: FormData) => {
-        'use server'
+    const handleLogin = async () => {
+        setLoading(true)
 
-        const { email, password } = Object.fromEntries(formData);
-        const emailEntry = typeof email === 'string' ? email : '';
-        const passwordEntry = typeof password === 'string' ? password: '';
+        const form = new FormData();
+        form.append('email', data.email);
+        form.append('password', data.password);
 
-        await login(emailEntry, passwordEntry);
-        
+        const send = await axios.post('/api/auth/login', form)
+            .then((res)=> {
+                setLoading(false)
+                if(res.data.status === 500){
+                    setMessage(res.data.data)
+                }
+            }).catch((err)=> {
+                setLoading(false)
+                setMessage("Algo correu mal. Tente novamente.")
+            })
+
     }
 
     return (
@@ -28,23 +43,37 @@ export default function Login(){
                 <div className="flex flex-col justify-center items-center gap-2">
                     <h1 className="uppercase font-semibold text-lg">login</h1>
                     <p className="text-sm font-light">Bem-vindo de volta ao Workdeal</p>
+
+                    { message != '' && (
+                        <span className="w-full text-center rounded-lg p-2 text-sm shadow-lg bg-white dark:bg-red-800">
+                            { message }
+                        </span>
+                    ) }
                 </div>
 
                 <form action={handleLogin} className="flex flex-col gap-3 mt-5 w-full p-2">
-                    <input 
-                        type="email" 
-                        name="email"
-                        placeholder="Email"
-                        className="w-full p-2 px-4 rounded-lg bg-white dark:bg-black focus:outline-none "
-                    />
+                    <div className="w-full flex flex-col gap-2">
+                        <input 
+                            type="email" 
+                            onChange={(e) => setData({...data, email: e.target.value})}
+                            placeholder="Email"
+                            className="w-full p-2 px-4 rounded-lg bg-white dark:bg-black focus:outline-none "
+                        />
+                    </div>
                     <input 
                         type="password" 
-                        name="password"
+                        onChange={(e)=> setData({...data, password: e.target.value})}
                         placeholder="Password"
                         className="w-full p-2 px-4 rounded-lg bg-white dark:bg-black focus:outline-none "
                     />
 
-                    <ButtonSubmit text="Login" />
+                <button
+                    type="button"
+                    onClick={handleLogin}
+                    className="w-full p-2 bg-teal-600 text-white rounded-lg flex flex-row items-center justify-center"
+                >
+                    { loading ? <ReloadIcon className="mr-2 h-5 w-5 animate-spin" /> : 'Entrar' }
+                </button>
                 </form>
 
                 <div className="mt-5 flex flex-row justify-between w-full px-4">

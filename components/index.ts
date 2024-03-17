@@ -4,10 +4,13 @@ import { ThemeProvider } from "./lib/theme-provider";
 import ButtonSubmit from "./buttons/submit";
 import ConcursoCard from "./lib/ConcursoCard";
 import ButtonProposta from "./buttons/proposta";
-import HumanTime from "./lib/HumanTime"
-import ConcursoForm from "./forms/ConcursoForm"
-import AcceptProposta from "./buttons/accept-proposta"
-import Headbar from "./dashboard/Headbar"
+import HumanTime from "./lib/HumanTime";
+import ConcursoForm from "./forms/ConcursoForm";
+import AcceptProposta from "./buttons/accept-proposta";
+import Headbar from "./dashboard/Headbar";
+import AddDepartamento from "./buttons/add-department";
+import TableUsers   from "./dashboard/TableOrgUsers";
+import AddUsers from "./buttons/add-users-department";
 
 
 export {
@@ -21,4 +24,7 @@ export {
     ConcursoForm,
     AcceptProposta,
     Headbar,
+    AddDepartamento,
+    TableUsers,
+    AddUsers,
 }

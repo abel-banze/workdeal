@@ -6,17 +6,12 @@ import { getLoggedUser } from "@/actions/get"
 export async function createConcurso(form: ConcursoType){
     try{
         
-        const auth = await getLoggedUser()
-
-        if(!auth) return "unathenticade";
-
-        
         // criar o concurso
         const promise = await db.concurso.create({
             data: {
-                user: {
+                author: {
                     connect: {
-                        id: auth.id
+                        id: form.organizacao
                     }
                 },
                 title: form.title,
@@ -24,6 +19,7 @@ export async function createConcurso(form: ConcursoType){
                 prazo: form.prazo,
                 precoMin: form.precoMin,
                 precoMax: form.precoMax,
+                localizacao: form.localizacao,
                 sector: {
                     connect: {
                         id: form.sector
@@ -203,7 +199,6 @@ export async function saveConcurso(form: SaveObjectType){
     }
 }
 
-
 export async function createCategoria(name: string){
     try{
 
@@ -219,5 +214,113 @@ export async function createCategoria(name: string){
 
     }catch(err){
         return "failed";
+    }
+}
+
+export async function createOrganizacao(form: any) {
+    try {
+        const auth = await getLoggedUser();
+        if (!auth) return "unathenticade"
+
+        // criar organizacao
+        const createdOrganizacao = await db.organizacao.create({
+            data: {
+                user: {
+                    connect: {
+                        id: auth.id
+                    }
+                },
+                sector: {
+                    connect: {
+                        id: form.sector
+                    }
+                },
+                name: form.name,
+                email: form.email,
+                slogan: form.slogan,
+                descricao: form.descricao,
+                nuit: form.nuit,
+                logo: form.logo,
+                contactos: form.contactos
+            }
+        });
+
+
+        if (!createdOrganizacao) return "failed";
+
+        return createdOrganizacao;
+
+    } catch (err) {
+        console.error("Error creating organization:", err);
+        return "failed";
+    }
+}
+
+export async function createColaborador(form: any){
+    try{
+
+        const auth = await getLoggedUser();
+        if (!auth) return "unathenticade"
+
+        const cargo = form.cargo ? form.cargo : 'editor';
+
+        const addColaborador = await db.colaborador.create({
+            data: {
+                user: {
+                    connect: {
+                        id: auth.id
+                    }
+                },
+                organizacao: {
+                    connect: {
+                        id: form.organizacao
+                    }
+                },
+                cargo: cargo,
+                descricao: form.descricao
+            }
+        })
+
+    }catch(err){
+        return "failed";
+    }
+}
+
+export async function registerFacebookAccount(){
+    try{
+
+        const auth = await getLoggedUser();
+        if (!auth) return "unathenticade";
+
+        const checkToken = await db.account.findFirst({
+            where: {
+                userId: auth.id
+            }
+        });
+
+        if(!checkToken) return "failed";
+
+        if(checkToken.provider === 'facebook'){
+            const createConnection = await db.connect.create({
+                data: {
+                    user: {
+                        connect: {
+                            id: auth.id
+                        }
+                    },
+                    media: checkToken.provider,
+                    token: checkToken.access_token
+                }
+            })
+
+            if(!createConnection) return "failed";
+
+            return "success";
+        }
+
+        return "failed";
+
+    }catch(err){
+        return "failed"
     }
 }

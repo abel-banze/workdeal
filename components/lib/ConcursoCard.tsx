@@ -13,13 +13,15 @@ export default function ConcursoCard({ type, data} : { type: string; data: any }
                         <div className="flex flex-row gap-2 items-center justify-center">
                             <div className="w-5 h-5 rounded-full bg-white dark:bg-zinc-800">
                                 <Image   
-                                    src={data.user.avatarUrl} 
+                                    src={data.author.logo}
+                                    width={500}
+                                    height={500}
                                     alt="avatar"
                                     className="w-full h-full object-cover rounded-full"
                                 />
                             </div>
 
-                            <small className="text-xs text-slate-500"> { data.user.firstName + ' ' + data.user.lastName} </small>
+                            <small className="text-xs text-slate-500"> { data.author.name} </small>
                         </div>
                     ) } 
                     <span className="text-xs text-slate-500">Publicado { HumanTime(data.createAt)}</span>

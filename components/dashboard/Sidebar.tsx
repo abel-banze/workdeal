@@ -7,7 +7,7 @@ import { AiOutlineAppstore, AiOutlineCalendar } from "react-icons/ai";
 import { HiOutlineUsers } from "react-icons/hi";
 import { GrDocumentStore } from "react-icons/gr";
 import { BiTask, BiStore } from "react-icons/bi";
-import { PiHammer } from "react-icons/pi";
+import { PiHammer, PiSuitcaseSimple } from "react-icons/pi";
 import { SlSettings } from "react-icons/sl";
 import { LuHardHat } from "react-icons/lu";
 import { BsMegaphone } from "react-icons/bs"
@@ -22,11 +22,6 @@ export default function SidebarDashboard(){
             label: 'Dashboard',
             path: '/dashboard',
             icon: AiOutlineAppstore,
-        },
-        {
-            label: 'Colaboradores',
-            path: '/workers',
-            icon: HiOutlineUsers,
         },
         {
             label: 'Ficheiros',
@@ -46,6 +41,10 @@ export default function SidebarDashboard(){
             icon: BiStore,
             menu: [
                 {
+                    label: 'todas lojas',
+                    url: ''
+                },
+                {
                     label: 'minhas lojas',
                     url: 'minhas'
                 },
@@ -59,6 +58,25 @@ export default function SidebarDashboard(){
                 }
             ]
         },
+
+        {
+            name: 'organizacoes',
+            icon: PiSuitcaseSimple,
+            menu: [
+                {
+                    label: 'Encontrar organização',
+                    url: 'all'
+                },
+                {
+                    label: 'minhas organizações',
+                    url: ''
+                },
+                {
+                    label: 'criar organização',
+                    url: 'create'
+                }
+            ]
+        },
         {
             name: 'marketing',
             icon: BsMegaphone,
@@ -68,8 +86,8 @@ export default function SidebarDashboard(){
                     url: 'media'
                 },
                 {
-                    label: 'mail-Marketing',
-                    url: 'mail-marketing'
+                    label: 'mail-marketing',
+                    url: 'mail'
                 },
                 {
                     label: 'SMS-marketing',
@@ -92,6 +110,10 @@ export default function SidebarDashboard(){
                 {
                     label: 'criar tarefa',
                     url: 'create'
+                },
+                {
+                    label: 'guardados',
+                    url: 'saved'
                 }
             ]
         },
@@ -110,6 +132,10 @@ export default function SidebarDashboard(){
                 {
                     label: 'criar concurso',
                     url: 'create'
+                },
+                {
+                    label: 'guardados',
+                    url: 'saved'
                 }
             ]
         },
@@ -134,7 +160,7 @@ export default function SidebarDashboard(){
 
     return (
         <>
-            <div className="text-gray-500 bg-white dark:bg-zinc-900 dark:text-gray-100 shadow-xl z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
+            <div className="text-gray-500 bg-white dark:bg-zinc-900 dark:text-gray-100 shadow-xl z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative sticky top-0 left-0 !bottom-0">
                 <div className="flex items-center gap-2.5 font-bold border-b border-slate-300 dark:border-gray-700 py-3 mx-3">
                     <h1 className="text-xl whitespace-pre"> 
                         Workdeal
@@ -175,21 +201,6 @@ export default function SidebarDashboard(){
                                 Definições
                             </Link>
                         </li>
-
-                        <div className="flex flex-col gap-2 items-center mx-2 rounded-lg p-2 bg-slate-200 dark:bg-black/30">
-                            <small className="text-xs text-slate-500">Pacote actual</small>
-                            <div className="flex flex-row gap-2 items-center">
-                                <div className="flex flex-col gap-2">
-                                    <h1 className="font-semibold">Standard</h1>
-                                    <span className="text-xs">799/mês</span>
-                                </div>
-                                <button
-                                    className="text-xs p-2 rounded-lg text-white bg-teal-600"
-                                >
-                                    UPGRADE
-                                </button>
-                            </div>
-                        </div>
                     </ul>
                 </div>
             </div>
