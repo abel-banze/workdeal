@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react";
 export default function Headbar(){
     return (
         <>
-            <header className="w-full p-4 flex sticky bg-black/30 backdrop-blur bg-opacity-70 border-b border-slate-200 dark:border-gray-700 top-0 items-center justify-end">
+            <header className="w-full p-4 flex sticky bg-white dark:bg-black/30 backdrop-blur bg-opacity-90 border-b border-slate-200 dark:border-gray-700 top-0 items-center justify-end">
                 <nav className="flex flex-row gap-5">
                     <button>
                         <SlEnvolope size={20} />

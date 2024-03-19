@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import Link from "next/link";
 import { AiOutlineAppstore, AiOutlineCalendar } from "react-icons/ai";
 import { HiOutlineUsers } from "react-icons/hi";
+import { IoCartOutline } from "react-icons/io5";
 import { GrDocumentStore } from "react-icons/gr";
 import { BiTask, BiStore } from "react-icons/bi";
 import { PiHammer, PiSuitcaseSimple } from "react-icons/pi";
@@ -24,7 +25,7 @@ export default function SidebarDashboard(){
             icon: AiOutlineAppstore,
         },
         {
-            label: 'Ficheiros',
+            label: 'Documentos',
             path: '/files',
             icon: GrDocumentStore,
         },
@@ -37,13 +38,14 @@ export default function SidebarDashboard(){
 
     const subMenuList = [
         {
-            name: 'marketplace',
+            name: 'Marketplace',
+            icon: IoCartOutline,
+            menu: null
+        },
+        {
+            name: 'market',
             icon: BiStore,
             menu: [
-                {
-                    label: 'todas lojas',
-                    url: ''
-                },
                 {
                     label: 'minhas lojas',
                     url: 'minhas'
@@ -60,19 +62,19 @@ export default function SidebarDashboard(){
         },
 
         {
-            name: 'organizacoes',
+            name: 'empresas',
             icon: PiSuitcaseSimple,
             menu: [
                 {
-                    label: 'Encontrar organização',
+                    label: 'Encontrar empresa',
                     url: 'all'
                 },
                 {
-                    label: 'minhas organizações',
+                    label: 'minhas empresas',
                     url: ''
                 },
                 {
-                    label: 'criar organização',
+                    label: 'criar empresa',
                     url: 'create'
                 }
             ]
@@ -174,7 +176,7 @@ export default function SidebarDashboard(){
                                 const isActive = item.path === pathname;
 
                                 return (
-                                    <li className={`p-1 ${isActive && ' rounded-lg bg-slate-200 dark:bg-black/30'}`} key={index}>
+                                    <li className={`p-1 ${isActive && ' rounded-lg bg-slate-100 dark:bg-black/30'}`} key={index}>
                                         <Link href={item.path} className="flex flex-row gap-2 whitespace-pre">
                                             { <item.icon size={23} /> }
                                             { item.label }

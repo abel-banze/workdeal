@@ -1,7 +1,7 @@
-import { ButtonProposta } from "@/components"
-import { getTarefaById } from "@/actions/get"
-import { HumanTime } from "@/components"
-
+import { ButtonProposta } from "@/components";
+import { getTarefaById } from "@/actions/get";
+import { HumanTime } from "@/components";
+import { redirect } from "next/navigation";
 
 export default async function TarefaDetails({ params } : {
     params: {
@@ -10,6 +10,8 @@ export default async function TarefaDetails({ params } : {
 }){
 
     const getData = await getTarefaById(params.id)
+
+    if(getData === 'failed') redirect('/tarefas');
 
     return (
         <>
@@ -21,7 +23,7 @@ export default async function TarefaDetails({ params } : {
                     <div className="w-full flex flex-col gap-2">
                         <h1 className="text-xl font-semibold"> { getData?.title } </h1>
                         <div className="flex flex-row items-center justify-between w-1/2 lg:w-4/12">
-                            <small className="text-xs text-slate-500"> { getData?.user.firstName + ' ' + getData?.user.lastName } </small>
+                            <small className="text-xs text-slate-500"> Autor: { getData?.user.firstName + ' ' + getData?.user.lastName } </small>
                             <small className="text-xs text-slate-500"> { getData?.propostas.length } propostas feitas</small>                            
                         </div>
                         <span className="text-sm text-slate-700 dark:text-slate-300">

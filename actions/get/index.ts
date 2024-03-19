@@ -48,6 +48,8 @@ export async function getCategories(){
     }
 }
 
+ /*  SECCAO DE CONCURSOS  */
+
 export async function getConcursos(){
     try{
 
@@ -93,6 +95,70 @@ export async function getConcursoById(id: string){
     }
 }
 
+export async function getMyConcursos(){
+    try{
+
+        const auth = await getLoggedUser()
+        if(!auth) return "unathenticade";
+
+        const promise = await db.concurso.findMany({
+            where: {
+                author: {
+                    userId: auth.id
+                }
+            },
+            include: {
+                author: true,
+                propostas: true
+            }
+        });
+
+        return promise;
+
+    }catch(err){
+        return "failed"
+    }
+}
+
+export async function getSavedConcursos(){
+    try{
+
+        const auth = await getLoggedUser()
+        if(!auth) return "unathenticade";
+
+        const saved = await db.saved.findMany({
+            where: {
+                type: 'concurso',
+                userId: auth.id
+            }
+        });
+
+        const concursos = [];
+
+        if(!saved) return null;
+
+        for(let i=0; i < saved.length ; i++){
+            if(saved[i].objectId){
+                const promise = await db.concurso.findFirst({
+                    where: {
+                        id: saved[i].objectId?.toString()
+                    }
+                });
+    
+                concursos.push(promise)
+            }
+        }
+
+        return concursos;
+
+
+    }catch(err){
+        return "failed";
+    }
+}
+
+/* SECCAO DAS TAREFAS */
+
 export async function getTarefas(){
     try{
 
@@ -119,31 +185,69 @@ export async function getTarefaById(id: string){
             },
             include: {
                 user: true,
-                propostas: true
+                propostas: {
+                    include: {
+                        user: true
+                    }
+                }
             }
         });
 
         return promise;
 
     }catch(err){
-        return null;
+        return "failed";
     }
 }
 
-export async function getMyConcursos(){
+export async function getSavedTarefas(){
     try{
 
         const auth = await getLoggedUser()
         if(!auth) return "unathenticade";
 
-        const promise = await db.concurso.findMany({
+        const saved = await db.saved.findMany({
             where: {
-                author: {
-                    userId: auth.id
-                }
+                type: 'tarefa',
+                userId: auth.id
+            }
+        });
+
+        const concursos = [];
+
+        if(!saved) return null;
+
+        for(let i=0; i < saved.length ; i++){
+            if(saved[i].objectId){
+                const promise = await db.tarefa.findFirst({
+                    where: {
+                        id: saved[i].objectId?.toString()
+                    }
+                });
+    
+                concursos.push(promise)
+            }
+        }
+
+        return concursos;
+
+
+    }catch(err){
+        return "failed";
+    }
+}
+
+export async function getMyTarefas(){
+    try{
+
+        const auth = await getLoggedUser()
+        if(!auth) return "unathenticade";
+
+        const promise = await db.tarefa.findMany({
+            where: {
+                userId: auth.id
             },
             include: {
-                author: true,
                 propostas: true
             }
         });
@@ -154,6 +258,7 @@ export async function getMyConcursos(){
         return "failed"
     }
 }
+/* SECCAO DAS PROPOSTAS */
 
 export async function getMyPropostas(){
     try{
@@ -184,6 +289,8 @@ export async function getMyPropostas(){
     }
 }
 
+
+/* SECCAO DAS ORGANIZACOES */
 export async function getMyOrganizations(){
     try{
 

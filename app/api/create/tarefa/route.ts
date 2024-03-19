@@ -13,6 +13,8 @@ export async function POST(request: any){
     const precoMin = body.get('precoMin') as string;
     const precoMax = body.get('precoMax') as string;
     const sector = body.get('sector') as string;
+    const organizacao = body.get('organizacao') as string;
+    const localizacao = body.get('localizacao') as string;
     const files = body.getAll('ficheiros');
 
     const data = {
@@ -23,6 +25,8 @@ export async function POST(request: any){
         precoMin,
         precoMax,
         sector,
+        organizacao,
+        localizacao,
         files
     }
 

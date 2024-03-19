@@ -83,7 +83,7 @@ export default function AddUsers(){
                         <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white dark:bg-zinc-800 p-6 text-left align-middle shadow-xl transition-all">
                         <Dialog.Title
                             as="h3"
-                            className="text-lg font-medium leading-6 text-gray-900"
+                            className="text-lg font-medium leading-6"
                         >
                             Adicionar colaborador
                         </Dialog.Title>
@@ -92,7 +92,7 @@ export default function AddUsers(){
                                 <input 
                                     type="text"
                                     onChange={(e) => searchUser(e.target.value)} 
-                                    className="p-2 px-5 w-full border border-slate-200 dark:bg-zinc-600 rounded-lg focus:outline-none"
+                                    className="p-2 px-5 w-full bg-slate-200 dark:bg-zinc-600 rounded-lg focus:outline-none"
                                     placeholder="Escreva o nome do usuário..."
                                 />
 

@@ -3,7 +3,8 @@ export const publicRoutes = [
     '/concursos',
     '/tarefas',
     '/pacotes',
-    '/support'
+    '/support',
+    '/marketplace',
 ]
 
 export const authRoutes = [

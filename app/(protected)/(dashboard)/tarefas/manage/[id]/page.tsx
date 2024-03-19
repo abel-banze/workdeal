@@ -1,9 +1,12 @@
-import { getConcursoById } from "@/actions/get"
+import { getTarefaById} from "@/actions/get"
 import { AcceptProposta } from "@/components"
+import { redirect } from "next/navigation";
 
 
-export default async function GerirPropostasConcurso({ params } : { params: { id: string } }){
-    const getData = await getConcursoById(params.id)
+export default async function GerirPropostasTarefa({ params } : { params: { id: string } }){
+    const getData = await getTarefaById(params.id)
+
+    if(!getData) redirect('/tarefas/manage');
 
     return (
         <>

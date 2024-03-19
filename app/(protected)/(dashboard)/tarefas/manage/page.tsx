@@ -1,10 +1,11 @@
-import { getMyConcursos } from "@/actions/get";
+import { getMyTarefas } from "@/actions/get";
 import Link from "next/link";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
+import { TbBriefcaseOff } from "react-icons/tb";
 import { HumanTime } from "@/components"
 
-export default async function ManageConcurso(){
-    const getData = await getMyConcursos();
+export default async function ManageTarefa(){
+    const getData = await getMyTarefas();
 
     return (
         <>
@@ -25,7 +26,7 @@ export default async function ManageConcurso(){
                             </div>
                             <div className="w-full mt-5 flex flex-row items-center justify-between">
                                 <Link
-                                    href={`/concursos/manage/${item.id}`}
+                                    href={`/tarefas/manage/${item.id}`}
                                     className="p-2 text-sm px-4 text-white bg-teal-600 rounded-lg"
                                 >
                                     Gerir propostas
@@ -48,6 +49,21 @@ export default async function ManageConcurso(){
                         </div>
                     )) }
                 </div>
+
+                { getData != 'failed' && getData != 'unathenticade' && getData.length === 0 && (
+                    <div className="w-full flex flex-col gap-5 items-center justify-center">
+                        <div className="w-full lg:w-1/2 rounded-lg bg-white shadow-lg dark:bg-zinc-800 p-2 flex flex-col gap-3 items-center justify-center">
+                            <TbBriefcaseOff className="text-slate-500" size={60} />
+                            <span className="text-lg font-light">
+                                Não tens nenhuma tarefa publicada.
+                            </span>
+
+                            <Link href="/tarefas/create" className="p-2 rounded-lg px-5 bg-teal-600 text-white text-sm">
+                                Criar tarefa
+                            </Link>
+                        </div>
+                    </div>
+                ) }
             </div>
         </>
     )

@@ -11,7 +11,10 @@ import Headbar from "./dashboard/Headbar";
 import AddDepartamento from "./buttons/add-department";
 import TableUsers   from "./dashboard/TableOrgUsers";
 import AddUsers from "./buttons/add-users-department";
-
+import PublicHeader from "./lib/PublicHeader";
+import ProductSlider from "./lib/ProductSlider";
+import MarketplaceHero from "./lib/MarketplaceHero";
+import ProductCard from "./lib/ProductCard";
 
 export {
     SidebarDashboard,
@@ -27,4 +30,8 @@ export {
     AddDepartamento,
     TableUsers,
     AddUsers,
+    PublicHeader,
+    ProductSlider,
+    MarketplaceHero,
+    ProductCard,
 }

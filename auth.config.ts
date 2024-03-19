@@ -1,5 +1,6 @@
 import Credentials from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
+import LinkedInProvider from "next-auth/providers/linkedin";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
@@ -49,6 +50,10 @@ const nextAuthConfig: NextAuthConfig = {
     FacebookProvider({
       clientId: '381020798112514',
       clientSecret: 'b91cb367e6f1241e920c9780448526f3'
+    }),
+    LinkedInProvider({
+      clientId: '77wpm8mgh8hyo3',
+      clientSecret: '6bMSR5Sn02lVjiU6'
     })
   ]
 };

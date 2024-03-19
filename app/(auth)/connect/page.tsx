@@ -28,7 +28,7 @@ export default function Connect(){
                         <FaInstagram size={56} />
                         Associar
                     </div>
-                    <div className="p-2 px-5 rounded-lg cursor-pointer bg-blue-500 flex flex-col gap-5 items-center justify-center">
+                    <div  onClick={() => handleConnect('linkedin')} className="p-2 px-5 rounded-lg cursor-pointer bg-blue-500 flex flex-col gap-5 items-center justify-center">
                         <FaLinkedin size={56} />
                         Associar
                     </div>
