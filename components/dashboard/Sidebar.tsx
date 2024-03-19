@@ -38,7 +38,7 @@ export default function SidebarDashboard(){
 
     const subMenuList = [
         {
-            name: 'Marketplace',
+            name: 'marketplace',
             icon: IoCartOutline,
             menu: null
         },
@@ -88,13 +88,16 @@ export default function SidebarDashboard(){
                     url: 'media'
                 },
                 {
-                    label: 'mail-marketing',
+                    label: 'Email-marketing',
                     url: 'mail'
                 },
+                /*
                 {
                     label: 'SMS-marketing',
                     url: 'sms'
                 }
+
+                */
             ]
         },
         {

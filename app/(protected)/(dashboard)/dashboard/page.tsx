@@ -14,7 +14,7 @@ export default async function Dashboard(){
     return (
         <>
             <div className="w-full flex flex-col gap-5 p-5">
-                <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-3">
+                <div className="w-full grid grid-cols-1 lg:grid-cols-5 gap-3">
                     <div className="w-full rounded-lg p-2 flex flex-row items-center px-5 gap-3 bg-white shadow dark:bg-zinc-800">
                         <FaRegBuilding size={40} />
                         <div className="w-full flex flex-col">

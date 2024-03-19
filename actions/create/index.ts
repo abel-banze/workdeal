@@ -324,3 +324,42 @@ export async function registerFacebookAccount(){
         return "failed"
     }
 }
+
+
+export async function createDocument(form: any){
+    try{
+
+        const auth = await getLoggedUser();
+        if (!auth) return "unathenticade";
+
+        const submit = await db.documento.create({
+            data: {
+                user: {
+                    connect: {
+                        id: auth.id
+                    }
+                },
+                organizacao: {
+                    connect: {
+                        id: form.empresa
+                    }
+                },
+                departamento: {
+                    connect: {
+                        id: form.departamento
+                    }
+                },
+                tipo: form.tipo,
+                descricao: form.tipo,
+                fileId: form.file
+            }
+        });
+
+        console.log(submit);
+
+        return submit;
+
+    }catch(err){
+        return "failed";
+    } 
+}

@@ -83,6 +83,7 @@ model User {
     colaboradores   Colaborador[]
     organizacoes    Organizacao[]
     connections     Connect[]
+    documentos      Documento[]
     createAt        DateTime    @default(now())
 }
 
@@ -106,6 +107,7 @@ model Organizacao {
     concursos       Concurso[]
     servicos        OrganizacaoServico[]
     departamentos   Departamento[]
+    documentos      Documento[]
 }
 
 
@@ -266,6 +268,7 @@ model Departamento {
   organizacaoId   String        @db.ObjectId
   organizacao     Organizacao   @relation(fields: [organizacaoId], references: [id])
   colaboradores   Colaborador[]
+  documentos      Documento[]
   name            String?
 }
 
@@ -275,4 +278,17 @@ model Connect {
   user            User          @relation(fields: [userId], references: [id])
   media           String?
   token           String?
+}
+
+model Documento {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String        @db.ObjectId
+  user            User          @relation(fields: [userId], references: [id])
+  organizacaoId   String?        @db.ObjectId
+  organizacao     Organizacao?   @relation(fields: [organizacaoId], references: [id])
+  departamentoId  String?       @db.ObjectId
+  departamento    Departamento? @relation(fields: [departamentoId], references: [id])
+  tipo            String?
+  descricao       String?
+  fileId          String?
 }
