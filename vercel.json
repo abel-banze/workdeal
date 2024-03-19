@@ -1,0 +1,12 @@
+{
+    "version": 3,
+    "builds": [
+      {
+        "src": "/",
+        "use": "@vercel/next",
+        "config": {
+          "buildCommand": "next build && npx prisma generate"
+        }
+      }
+    ]
+  }
