@@ -48,12 +48,12 @@ const nextAuthConfig: NextAuthConfig = {
       }
     }),
     FacebookProvider({
-      clientId: '381020798112514',
-      clientSecret: 'b91cb367e6f1241e920c9780448526f3'
+      clientId: process.env.FACEBOOK_API_KEY,
+      clientSecret: process.env.FACEBOOK_SECRET_KEY
     }),
     LinkedInProvider({
-      clientId: '77wpm8mgh8hyo3',
-      clientSecret: '6bMSR5Sn02lVjiU6'
+      clientId: process.env.LINKEDIN_API_KEY,
+      clientSecret: process.env.LINKEDIN_SECRET_KEY
     })
   ]
 };

@@ -15,7 +15,7 @@ export async function getLoggedUser(){
 
         const session = await auth();
 
-        if(session && session.user.email){
+        if(session && session.user && session.user.email){
             const promise = await db.user.findUnique({
                 where: {
                     email: session.user.email
